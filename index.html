@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autonomia Digital | Engenho Novo</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --accent-purple: #6f42c1;
+        --hover-purple: #8c61db;
+        --deep-black: #0c0516;
+        --bg-dark-purple: #1a0b2e;
+        --card-white: #ffffff;
+        --text-main: #2d3436;
+        --text-muted: #636e72;
+    }
+
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Inter', sans-serif;
+        color: var(--text-main);
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+    }
+
+    /* --- NAVBAR --- */
+    .navbar {
+        background-color: var(--deep-black);
+        padding: 15px 0;
+        border-bottom: 3px solid var(--accent-purple);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar-brand {
+        font-weight: 800;
+        color: white !important;
+        font-size: 1.4rem;
+    }
+
+    /* --- HERO --- */
+    .hero-section {
+        background: linear-gradient(180deg, var(--accent-purple) 0%, var(--deep-black) 100%) !important;
+        color: white;
+        padding: 100px 0 60px;
+        border-radius: 0 0 50px 50px;
+        margin-bottom: 50px;
+    }
+
+    /* --- NAVEGAÇÃO SPA --- */
+    .page-content {
+        display: none;
+        padding-bottom: 60px;
+        min-height: 70vh;
+    }
+
+    .page-active {
+        display: block;
+        animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* --- CARDS HOME --- */
+    .feature-card {
+        border: none;
+        border-radius: 25px;
+        background: var(--card-white);
+        padding: 40px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        height: 100%;
+        cursor: pointer;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-15px);
+        box-shadow: 0 20px 40px rgba(111, 66, 193, 0.2);
+        border-color: var(--accent-purple);
+    }
+
+    .icon-circle {
+        width: 70px;
+        height: 70px;
+        background: rgba(111, 66, 193, 0.1);
+        color: var(--accent-purple);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        margin-bottom: 25px;
+    }
+
+    /* --- CONTEÚDO --- */
+    .content-header {
+        margin-bottom: 40px;
+        border-left: 5px solid var(--accent-purple);
+        padding-left: 20px;
+    }
+
+    .content-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+    }
+
+    .step-number {
+        background: var(--accent-purple);
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        font-weight: bold;
+    }
+
+    /* --- BOTÃO COM DEGRADÊ (Relatar Problema) --- */
+    .btn-custom {
+        background: linear-gradient(180deg, var(--accent-purple) 0%, var(--bg-dark-purple) 100%) !important;
+        color: white !important;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-weight: 700;
+        border: none;
+        transition: 0.3s;
+        box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3);
+    }
+
+    .btn-custom:hover {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+
+    .btn-back {
+        margin-bottom: 25px;
+        color: var(--accent-purple);
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .btn-back:hover {
+        text-decoration: underline;
+    }
+
+/* --- CONTAINER PAI DO CHAT --- */
+.chat-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+}
+
+/* --- A BOLINHA (BOTÃO) --- */
+.chat-widget-button {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    /* Degradê de cima para baixo conforme você pediu */
+    background: linear-gradient(180deg, var(--accent-purple) 0%, var(--bg-dark-purple) 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    transition: 0.3s;
+}
+
+.chat-widget-button:hover {
+    transform: scale(1.1);
+}
+
+/* --- A JANELA DO CHAT --- */
+.chat-window {
+    position: absolute;
+    bottom: 80px; /* Fica acima da bolinha */
+    right: 0;
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 20px;
+    display: none; /* Começa escondido */
+    flex-direction: column;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* --- ESTILO INTERNO DO CHAT (Para não bugar o visual) --- */
+.chat-header {
+    background: var(--deep-black);
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-body {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #f9f9f9;
+}
+
+.bot-msg {
+    background: white;
+    padding: 10px 15px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    font-size: 0.9rem;
+}
+
+    footer {
+        background: var(--deep-black);
+        color: white;
+        padding: 60px 0;
+        margin-top: 80px;
+    }
+
+
+    /* --- RESPONSIVIDADE PARA CELULARES (Mobile First) --- */
+
+    @media (max-width: 768px) {
+        /* 1. Ajuste do Container Principal */
+        .container {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        /* 2. Títulos Gigantes ficam menores no celular para não quebrarem */
+        .display-5 {
+            font-size: 2.2rem !important; /* Tamanho do "Guia de Processadores" */
+        }
+
+        /* 3. Ajuste da Barra Lateral Roxa do Título */
+        .d-flex.align-items-center.mb-5 {
+            border-left-width: 6px !important; /* Barra um pouco mais fina */
+            padding-left: 15px !important;
+            min-height: auto !important;
+        }
+
+        /* 4. Cards de Conteúdo (Hardware e Segurança) */
+        .content-card {
+            padding: 20px !important; /* Diminui o respiro interno */
+            margin-bottom: 15px !important;
+            border-radius: 15px !important;
+        }
+
+        .content-card h4 {
+            font-size: 1.2rem; /* Título do card menor */
+        }
+
+        /* 5. Coluna Lateral (Checklist) */
+        /* No celular, ela vai para baixo dos cards principais. 
+          Ajustamos para ela não ficar colada nas bordas. */
+        .col-md-4 {
+            margin-top: 20px;
+        }
+
+        /* 6. Botão Voltar */
+        .btn-back {
+            font-size: 1rem !important;
+            padding: 10px 0;
+        }
+
+        /* 7. Ajustes do Chat (Janela Flutuante) */
+        #chatWindow {
+            width: 90% !important; /* Quase a tela toda */
+            right: 5% !important;
+            bottom: 80px !important;
+            height: 70vh !important; /* Não ocupa a tela toda para não bugar o teclado */
+        }
+
+        /* 8. Botão Flutuante do Chat */
+        .chat-btn {
+            width: 50px;
+            height: 50px;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        /* 9. Modal de Relatório */
+        .modal-dialog {
+            margin: 10px; /* Evita que o modal encoste nas bordas do celular */
+        }
+    }
+
+            /* Forçar o botão do chat a aparecer na frente de tudo no celular */
+        #chat-button, .bot-container { 
+            z-index: 9999 !important; 
+            bottom: 20px !important; 
+            right: 20px !important;
+            position: fixed !important;
+        }
+
+        /* Se o chat for um iframe, ele precisa de largura definida para celular */
+        @media (max-width: 768px) {
+            #chat-window {
+                width: 90% !important;
+                right: 5% !important;
+                height: 60vh !important;
+            }
+        }
+
+/* Ajuste extra para telas muito pequenas (iPhone SE, etc) */
+@media (max-width: 400px) {
+    .display-5 {
+        font-size: 1.8rem !important;
+    }
+    
+    .step-number {
+        width: 25px;
+        height: 25px;
+        font-size: 0.9rem;
+    }
+}
+
+/* --- AJUSTES NA JANELA DO CHAT (Geral) --- */
+.chat-window {
+    position: fixed; /* Mudado de absolute para fixed para garantir posicionamento sobre a tela */
+    bottom: 100px; 
+    right: 30px;
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 20px;
+    display: none; 
+    flex-direction: column;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.1);
+    z-index: 10000; /* Garante que fique acima de tudo */
+}
+
+/* --- RESPONSIVIDADE PARA CELULARES --- */
+@media (max-width: 768px) {
+    .chat-window {
+        width: 85% !important; /* Quase a largura toda */
+        height: 70vh !important; /* 70% da altura da tela */
+        right: 7.5% !important; /* Centraliza lateralmente (100-85 / 2) */
+        bottom: 90px !important;
+        border-radius: 15px;
+    }
+
+    .chat-widget-button {
+        width: 55px;
+        height: 55px;
+        bottom: 20px;
+        right: 20px;
+    }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="javascript:void(0)" onclick="showPage('home')">
+            <i class="fa-solid fa-laptop-code me-2"></i>AUTONOMIA DIGITAL
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="javascript:void(0)" onclick="showPage('page-hardware')">Dicas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="javascript:void(0)" onclick="showPage('page-compra')">Guia</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="javascript:void(0)" onclick="showPage('page-seguranca')">Segurança</a>
+                </li>
+                <li class="nav-item ms-lg-3">
+                    <button class="btn btn-custom btn-sm" onclick="abrirModalErro()">Relatar Problema</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="home" class="page-content page-active">
+    <header class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-3">Guia de Independência Tecnológica</h1>
+            <p class="lead opacity-75">Criado para mulheres que desejam dominar o mundo digital sem depender de ninguém.</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card" onclick="showPage('page-hardware')">
+                    <div class="icon-circle"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                    <h3>Dicas Funcionais</h3>
+                    <p class="text-muted">Resolva problemas de hardware e lentidão você mesma.</p>
+                    <span class="text-primary fw-bold mt-auto">Acessar Guia <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card" onclick="showPage('page-compra')">
+                    <div class="icon-circle"><i class="fa-solid fa-cart-shopping"></i></div>
+                    <h3>Compre Sozinha</h3>
+                    <p class="text-muted">Entenda as especificações e não dependa de vendedores.</p>
+                    <span class="text-primary fw-bold mt-auto">Ver Manual <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card" onclick="showPage('page-seguranca')">
+                    <div class="icon-circle"><i class="fa-brands fa-whatsapp"></i></div>
+                    <h3>Segurança Digital</h3>
+                    <p class="text-muted">Proteja seus dados, redes sociais e evite golpes comuns.</p>
+                    <span class="text-primary fw-bold mt-auto">Proteger-se <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="page-hardware" class="page-content">
+    <div class="container mt-5">
+        <div class="btn-back" onclick="showPage('home')">
+            <i class="fa-solid fa-arrow-left"></i> Voltar para o Início
+        </div>
+
+        <div class="content-header">
+            <h2 class="display-5 fw-bold" style="color: var(--accent-purple);">Manutenção e Performance</h2>
+            <p class="text-muted">Cuide do seu equipamento como uma profissional e evite travamentos.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="content-card">
+                    <h4><span class="step-number">1</span> Desligamento Manual</h4>
+                    <p>Muitas pessoas apenas fecham a tela ou apertam o botão físico, mas isso apenas "suspende" o aparelho. 
+                    O ideal é desligar sempre pelo <strong>Menu Iniciar > Ligar/Desligar > Desligar</strong>. Isso garante que todos os processos sejam encerrados corretamente, evitando erros no Windows a longo prazo.</p>
+                </div>
+
+                <div class="content-card">
+                    <h4><span class="step-number">2</span> O Notebook na Tomada</h4>
+                    <p>É um <strong>mito</strong> que deixar o notebook no carregador vicia a bateria. Os aparelhos modernos foram feitos para gerenciar a energia de forma inteligente. Na verdade, notebooks entregam um <strong>desempenho muito melhor</strong> quando estão conectados à tomada!</p>
+                </div>
+
+                <div class="content-card">
+                    <h4><span class="step-number">3</span> Celulares e Ciclos de Vida</h4>
+                    <p>Diferente do PC, <strong>nunca use o celular enquanto ele carrega</strong>. Aparelhos têm "ciclos de vida": toda vez que a bateria chega a 0% ou carrega até 100%, um ciclo "morre". 
+                    Para evitar que o aparelho fique ruim e em desuso rápido, mantenha a carga entre <strong>20% e 80%</strong>.</p>
+                </div>
+
+                <div class="content-card">
+                    <h4><span class="step-number">4</span> Gerenciador de Tarefas</h4>
+                    <p>Se algo travou, use <strong>Ctrl + Shift + Esc</strong>. Na aba "Processos", você identifica qual programa está "roubando" a memória do seu PC e pode encerrá-lo clicando em "Finalizar Tarefa".</p>
+                </div>
+
+                <div class="content-card">
+                    <h4><span class="step-number">5</span> Limpeza de Disco</h4>
+                    <p>Arquivos temporários e lixos de atualizações deixam o sistema pesado. Digite "Limpeza de Disco" na busca do Windows e selecione <strong>"Limpar arquivos do sistema"</strong> para ganhar agilidade real.</p>
+                </div>
+
+                <div class="content-card">
+                    <h4><span class="step-number">6</span> Inicialização Rápida</h4>
+                    <p>No Gerenciador de Tarefas (Ctrl+Shift+Esc), vá em <strong>"Aplicativos de Inicialização"</strong> e desabilite programas como Spotify ou navegadores que ligam sozinhos com o PC.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="content-card bg-light border-0">
+                    <h5 class="fw-bold mb-3">Resumo de Ouro</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-3"><i class="fa-solid fa-power-off text-purple me-2"></i>Desligue sempre pelo menu Iniciar.</li>
+                        <li class="mb-3"><i class="fa-solid fa-laptop text-purple me-2"></i>Notebook na tomada = Mais rapidez.</li>
+                        <li class="mb-3"><i class="fa-solid fa-mobile-button text-purple me-2"></i>Celular: Use apenas fora da carga.</li>
+                        <li class="mb-3"><i class="fa-solid fa-battery-half text-purple me-2"></i>Mantenha entre 20% e 80%.</li>
+                        <li class="mb-3"><i class="fa-solid fa-keyboard text-purple me-2"></i><strong>Ctrl+Shift+Esc:</strong> Salva-vidas.</li>
+                        <hr>
+                        <li class="text-center small text-muted">Aparelhos bem cuidados duram o dobro do tempo!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="page-compra" class="page-content">
+    <div class="container mt-5">
+        <div class="btn-back" onclick="showPage('home')">
+            <i class="fa-solid fa-arrow-left"></i> Voltar para o Início
+        </div>
+
+        <div class="content-header">
+            <h2 class="display-5 fw-bold" style="color: var(--accent-purple);">Hardware: Guia Completo</h2>
+            <p class="text-muted">Tudo o que você precisa saber antes de bater o martelo na compra.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                
+                <div class="content-card">
+                    <h4><span class="step-number">1</span> Processador (O Cérebro)</h4>
+                    <p>É quem executa todas as tarefas. 
+                        <br>• <strong>Intel:</strong> Focado em estabilidade e ações do dia a dia.
+                        <br>• <strong>Ryzen:</strong> Focado em multitarefas e desempenho em jogos.
+                        <br><small class="text-muted">Dica: Busque no mínimo um Core i3 ou Ryzen 3 (Geração atual).</small>
+                    </p>
+                </div>
+
+                <div class="content-card">
+                    <h4><span class="step-number">2</span> Memória RAM (Mesa de Trabalho)</h4>
+                    <p>É onde o PC guarda o que está aberto agora. Quanto mais RAM, mais abas e programas você abre sem travar.
+                        <br>• <strong>4GB:</strong> Muito pouco hoje em dia (vai travar).
+                        <br>• <strong>8GB:</strong> O padrão ideal para a maioria das pessoas.
+                        <br>• <strong>16GB:</strong> Perfeito para quem joga ou trabalha com edição.
+                    </p>
+                </div>
+
+                <div class="content-card">
+                    <h4><span class="step-number">3</span> SSD vs HD (A Gaveta)</h4>
+                    <p>É onde ficam seus arquivos e o Windows. 
+                        <br>• <strong>SSD:</strong> Extremamente rápido. Faz o PC ligar em segundos. (Obrigatório!)
+                        <br>• <strong>HD:</strong> Lento e antigo. Serve apenas para guardar muitos arquivos pesados.
+                    </p>
+                </div>
+
+                <div class="content-card">
+                    <h4><span class="step-number">4</span> Placa de Vídeo (Os Olhos)</h4>
+                    <p>Responsável pelas imagens.
+                        <br>• <strong>Integrada:</strong> Já vem no processador. Ótima para estudos e trabalho.
+                        <br>• <strong>Dedicada (Ex: GTX, RTX):</strong> Necessária apenas se você quer jogar jogos pesados ou editar vídeos profissionais.
+                    </p>
+                </div>
+
+                <div class="content-card">
+                    <h4><span class="step-number">5</span> Tela e Painel</h4>
+                    <p>
+                        • <strong>Resolução Full HD (1080p):</strong> Essencial para imagem nítida.
+                        <br>• <strong>Painel IPS:</strong> As cores não distorcem quando você olha de lado. Fuja de telas "TN" se puder.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="content-card bg-light border-0">
+                    <h5 class="fw-bold mb-3">Checklist da Compra</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="fa-solid fa-square-check text-purple me-2"></i>
+                            Possui SSD? (Crucial)
+                        </li>
+                        <li class="mb-3">
+                            <i class="fa-solid fa-square-check text-purple me-2"></i>
+                            Tem pelo menos 8GB RAM?
+                        </li>
+                        <li class="mb-3">
+                            <i class="fa-solid fa-square-check text-purple me-2"></i>
+                            Tela é Full HD?
+                        </li>
+                        <li class="mb-3">
+                            <i class="fa-solid fa-square-check text-purple me-2"></i>
+                            Processador é i3/R3 ou superior?
+                        </li>
+                        <hr>
+                        <li class="text-center">
+                            <small class="text-muted italic">Seguindo isso, seu notebook vai durar anos!</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="page-seguranca" class="page-content">
+    <div class="container mt-5">
+        <div class="btn-back" onclick="showPage('home')"><i class="fa-solid fa-arrow-left"></i> Voltar para o Início</div>
+        
+        <div class="content-header">
+            <h2 class="display-5 fw-bold" style="color: var(--accent-purple);">Segurança e Privacidade Digital</h2>
+            <p class="text-muted">Proteja seu patrimônio digital e sua paz de espírito.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="content-card">
+                    <h4><span class="step-number">1</span> Autenticação em Duas Etapas</h4>
+                    <p>No WhatsApp, Instagram e Gmail, ative a <strong>Verificação em Duas Etapas</strong>. Isso cria uma camada de segurança onde, mesmo que descubram sua senha, precisarão de um código extra enviado ao seu celular para acessar.</p>
+                    <p>Para uma proteção mais robusta, instale o aplicativo "Authenticator". Ele gera senhas únicas a cada 30 segundos, impedindo acessos mesmo que sua senha principal seja vazada.</p>
+                </div>
+
+                <div class="content-card">
+                    <h4><span class="step-number">2</span> Golpe do Emprego e Links Falsos</h4>
+                    <p>Nunca clique em links de desconhecidos prometendo prêmios ou vagas. Um único clique pode instalar um <strong>Malware</strong> que dá acesso total ao seu aparelho.</p>
+                    <p>• Verifique o domínio: sites oficiais são <em>exemplo.com.br</em> e não nomes estranhos com muitos números.
+                    <br>• Cheque o remetente do e-mail: golpistas usam nomes parecidos, mas com letras trocadas.</p>
+                </div>
+
+                <div class="content-card">
+                    <h4><span class="step-number">3</span> O Perigo das Senhas Iguais</h4>
+                    <p>Se você usa a mesma senha para o Instagram, Facebook e Banco, basta um site ser hackeado para você perder tudo. 
+                    <br><strong>Dica:</strong> Use senhas fortes (com símbolos como @, #, $) e tente não repetir a senha principal do seu e-mail em outros sites menores.</p>
+                </div>
+
+                <div class="content-card">
+                    <h4><span class="step-number">4</span> Cuidado com Wi-Fi Público</h4>
+                    <p>Redes de shoppings, praças ou aeroportos podem ser interceptadas por hackers para "ouvir" o que você digita. 
+                    <br><strong>Regra:</strong> Nunca acesse aplicativos de banco ou digite senhas importantes quando estiver conectado em um Wi-Fi que não tenha senha ou seja de uso público.</p>
+                </div>
+
+                <div class="content-card">
+                    <h4><span class="step-number">5</span> Permissões de Aplicativos</h4>
+                    <p>Sempre que instalar um app, veja o que ele pede. Um aplicativo de "Lanterna" ou "Calculadora" não tem motivo para pedir acesso aos seus <strong>Contatos, Microfone ou Galeria de Fotos</strong>. Se pedir, desconfie e não autorize.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="content-card bg-light border-0">
+                    <h5 class="fw-bold mb-3">Checklist de Segurança</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-3"><i class="fa-solid fa-shield text-purple me-2"></i>Senha diferente para o Banco</li>
+                        <li class="mb-3"><i class="fa-solid fa-shield text-purple me-2"></i>Não salvar senhas em PCs públicos</li>
+                        <li class="mb-3"><i class="fa-solid fa-shield text-purple me-2"></i>Desconfiar de "brindes grátis"</li>
+                        <li class="mb-3"><i class="fa-solid fa-shield text-purple me-2"></i>Analisar e-mails estranhos com IA</li>
+                        <li class="mb-3"><i class="fa-solid fa-shield text-purple me-2"></i>Manter o Sistema atualizado</li>
+                        <li class="mb-3"><i class="fa-solid fa-shield text-purple me-2"></i>Cobrir a webcam quando não usar</li>
+                        <hr>
+                        <li class="text-center small text-muted">Sua privacidade é o seu bem mais valioso!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="chat-widget">
+
+    <div id="chatWindow" class="chat-window">
+        
+        <div class="chat-header">
+            <span>💻 Assistente de Notebooks</span>
+            <span style="cursor:pointer" onclick="toggleChat()">✕</span>
+        </div>
+
+        <div class="chat-body" id="chatContent" style="display: flex; flex-direction: column; height: 100%; overflow: hidden;">
+            <div id="chatMessages" style="flex-grow: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column;">
+                <div class="bot-msg">Olá! Sou seu assistente focado em Notebooks.</div>
+                <div class="bot-msg">O que você pretende fazer com seu novo computador?</div>
+            </div>
+
+            <div id="chatOptions" class="p-3 bg-light border-top">
+                <button class="btn btn-outline-primary w-100 mb-2" onclick="botEscolha('uso', 'Estudar', 'Ótima escolha! Qual seu orçamento?')">🎓 Estudar e Office</button>
+                <button class="btn btn-outline-primary w-100 mb-2" onclick="botEscolha('uso', 'Trabalho', 'Para trabalhar, qual seu orçamento?')">💼 Trabalho</button>
+                <button class="btn btn-outline-primary w-100 mb-2" onclick="botEscolha('uso', 'Jogar', 'Para jogos, qual seu orçamento?')">🎮 Jogar</button>
+                <button class="btn btn-outline-primary w-100" onclick="botEscolha('uso', 'Lazer', 'Para filmes, qual seu orçamento?')">🎬 Lazer</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-widget-button" onclick="toggleChat()" title="Assistente de Compra">
+        <i class="fa-solid fa-robot"></i>
+    </div>
+    
+</div>
+
+
+<div class="modal fade" id="modalErro" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+            
+            <div class="modal-header" style="border-bottom: none; padding: 20px 25px 10px 25px;">
+                <h5 class="modal-title fw-bold" style="color: var(--accent-purple);">Relatar Problema</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: #f4f4f4; border-radius: 50%; padding: 10px;"></button>
+            </div>
+
+            <div class="modal-body" style="padding: 10px 25px 25px 25px;">
+                <p class="text-muted small mb-4">Encontrou algo errado? Descreva abaixo e nossa equipe verificará.</p>
+                
+                <form id="formRelatorio">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Seu Nome</label>
+                        <input type="text" id="nomeRel" class="form-control" placeholder="Como te chamamos?" required style="border-radius: 10px;">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Seu Contato</label>
+                        <input type="text" id="contRel" class="form-control" placeholder="E-mail ou WhatsApp" required style="border-radius: 10px;">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Descrição do Problema</label>
+                        <textarea id="descRel" class="form-control" rows="3" placeholder="O que aconteceu?" required style="border-radius: 10px;"></textarea>
+                    </div>
+                    
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary" style="border-radius: 10px; background-color: var(--accent-purple); border: none; padding: 12px;">
+                            Enviar Relatório
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start">
+                <h4 class="fw-bold">Autonomia Digital</h4>
+                <p class="opacity-50">Desenvolvido para o Projeto Extensionista - Engenho Novo/RJ</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <p class="mb-0">Vitória Nascimento | RU: 5472131</p>
+                <p class="opacity-50">CST Análise e Desenvolvimento de Sistemas - UNINTER</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // NAVEGAÇÃO ENTRE PÁGINAS (SPA)
+    function showPage(pageId) {
+        document.querySelectorAll('.page-content').forEach(p => p.classList.remove('page-active'));
+        document.getElementById(pageId).classList.add('page-active');
+        window.scrollTo(0, 0);
+    }
+
+    // FUNÇÃO DO CHATBOT (FLUXO DE DECISÃO)
+    function botEscolha(tipo, escolhaUsuario, proximaPergunta) {
+        const chatMessages = document.getElementById('chatMessages');
+        const chatOptions = document.getElementById('chatOptions');
+
+        chatMessages.innerHTML += `
+            <div class="d-flex justify-content-end mb-3">
+                <div class="text-white p-2 rounded shadow-sm" style="background-color: var(--accent-purple); max-width: 80%; font-size: 0.9rem;">
+                    ${escolhaUsuario}
+                </div>
+            </div>`;
+
+        chatOptions.innerHTML = '<div class="text-center opacity-50 small">Digitando...</div>';
+
+        setTimeout(() => {
+            chatMessages.innerHTML += `
+                <div class="mb-3">
+                    <div class="bot-msg bg-white p-3 rounded shadow-sm border-start border-4 border-primary">
+                        ${proximaPergunta}
+                    </div>
+                </div>`;
+
+            if (tipo === 'uso') {
+                chatOptions.innerHTML = `
+                    <button class="btn btn-outline-primary btn-sm w-100 mb-2" onclick="botEscolha('valor', 'Até R$ 2.500', 'Busque um <strong>Samsung Book ou Acer Aspire 5 com i3</strong>. SSD é essencial!')">💸 Até R$ 2.500</button>
+                    <button class="btn btn-outline-primary btn-sm w-100 mb-2" onclick="botEscolha('valor', 'R$ 2.500 a R$ 4.000', 'Recomendo <strong>Lenovo Ideapad ou Dell Inspiron com i5 e 8GB de RAM</strong>.')">💰 R$ 2.500 a R$ 4.000</button>
+                    <button class="btn btn-outline-primary btn-sm w-100" onclick="botEscolha('valor', 'Acima de R$ 4.000', 'Recomendo <strong>MacBook Air M1 ou ASUS Vivobook OLED</strong>.')">💎 Acima de R$ 4.000</button>
+                `;
+            } 
+            else {
+                chatOptions.innerHTML = `
+                    <button class="btn btn-primary w-100" onclick="reiniciarChat()">Fazer nova consulta</button>
+                `;
+            }
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 600);
+    }
+
+    // NOVA FUNÇÃO PARA REINICIAR O CHAT SEM QUEBRAR A PÁGINA
+    function reiniciarChat() {
+        const chatMessages = document.getElementById('chatMessages');
+        const chatOptions = document.getElementById('chatOptions');
+
+        chatMessages.innerHTML = `
+            <div class="bot-msg">Olá! Sou seu assistente focado em Notebooks.</div>
+            <div class="bot-msg">O que você pretende fazer com seu novo computador?</div>
+        `;
+
+        chatOptions.innerHTML = `
+            <button class="btn btn-outline-primary w-100 mb-2" onclick="botEscolha('uso', 'Estudar', 'Ótima escolha! Qual seu orçamento?')">🎓 Estudar e Office</button>
+            <button class="btn btn-outline-primary w-100 mb-2" onclick="botEscolha('uso', 'Trabalho', 'Para trabalhar, qual seu orçamento?')">💼 Trabalho</button>
+            <button class="btn btn-outline-primary w-100 mb-2" onclick="botEscolha('uso', 'Jogar', 'Para jogos, qual seu orçamento?')">🎮 Jogar</button>
+            <button class="btn btn-outline-primary w-100" onclick="botEscolha('uso', 'Lazer', 'Para filmes, qual seu orçamento?')">🎬 Lazer</button>
+        `;
+    }
+
+    // ABRIR/FECHAR CHAT
+    function toggleChat() {
+        const chat = document.getElementById('chatWindow');
+        if (chat.style.display === 'none' || chat.style.display === '') {
+            chat.style.display = 'flex';
+        } else {
+            chat.style.display = 'none';
+        }
+    }
+
+    // RESPOSTA GENÉRICA (Caso precise para outras funções)
+    function botResp(pergunta) {
+        const body = document.getElementById('chatBody');
+        body.innerHTML += `<div class="align-self-end bg-purple text-white p-2 rounded mb-2">${pergunta}</div>`;
+
+        let resposta = pergunta.includes('notebook') ?
+            "Recomendo procurar um <strong>Acer Aspire 5 com 8GB RAM</strong>. É o melhor custo-benefício hoje!" :
+            "Use a ferramenta 'Limpeza de Disco' do próprio Windows. É segura e eficaz.";
+
+        setTimeout(() => {
+            body.innerHTML += `<div class="bot-msg bg-white p-3 rounded shadow-sm mb-2">${resposta}</div>`;
+            body.scrollTop = body.scrollHeight;
+        }, 600);
+    }
+
+    // MODAL E FORMULÁRIO (SIMULAÇÃO ADAPTADA PARA GITHUB PAGES)
+    function abrirModalErro() {
+        new bootstrap.Modal(document.getElementById('modalErro')).show();
+    }
+
+    document.getElementById('formRelatorio').onsubmit = function(e) {
+        e.preventDefault();
+        const btn = e.target.querySelector('button');
+        const textoOriginal = btn.innerText;
+        btn.innerText = "Enviando...";
+        btn.disabled = true;
+
+        const dados = {
+            nome: document.getElementById('nomeRel').value,
+            contato: document.getElementById('contRel').value,
+            msg: document.getElementById('descRel').value
+        };
+
+        // Simulação de envio estável para o GitHub Pages
+        setTimeout(() => {
+            alert(`Obrigada, ${dados.nome}! Relatório enviado com sucesso.\n(Nota: Esta é uma simulação de envio executada via GitHub Pages).`);
+            
+            // Reseta o formulário e o botão para o estado inicial
+            document.getElementById('formRelatorio').reset();
+            btn.innerText = textoOriginal;
+            btn.disabled = false;
+
+            // Fecha o modal de forma limpa e elegante
+            const modalEl = document.getElementById('modalErro');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) modalInstance.hide();
+        }, 1000);
+    };
+</script>
+</body>
+</html>
