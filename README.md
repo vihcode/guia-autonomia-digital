@@ -1,4 +1,4 @@
-# Autonomia Digital | Engenho Novo 💻💜
+# Autonomia Digital | Engenho Novo 
 
 Este site nasceu como um projeto de extensão universitária com um objetivo prático: democratizar o acesso à tecnologia e apoiar mulheres que querem resolver seus problemas digitais sem depender da ajuda de parceiros, amigos ou técnicos. 
 
