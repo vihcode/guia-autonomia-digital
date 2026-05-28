@@ -35,11 +35,3 @@ O projeto foi feito usando tecnologias web nativas para garantir que o site carr
 * **GitHub Pages:** Plataforma utilizada para a hospedagem gratuita do projeto.
 
 ---
-
-## ⚙️ Como abrir o código na sua máquina
-
-Caso queira baixar o projeto para estudar ou modificar:
-
-1. Baixe ou clone este repositório:
-```bash
-git clone [https://github.com/vihcode/guia-autonomia-digital.git](https://github.com/vihcode/guia-autonomia-digital.git)
